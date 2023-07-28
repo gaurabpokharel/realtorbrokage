@@ -7,6 +7,7 @@ import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -64,16 +65,19 @@ public class PropertiesController {
         PreparedStatement preparedStatement = null;
         try {
             con = databaseConnectivityDao.setUpConnection();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            Date convertedDate = (Date) sdf.parse(properties.getClosingDate());
-            System.out.println("Converteed Date is"+ convertedDate);
+            String dateString = properties.getClosingDate();
+            SimpleDateFormat sdfParse = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+            Date date = sdfParse.parse(dateString);
+
+            SimpleDateFormat sdfFormat = new SimpleDateFormat("yyyy/MM/dd");
+            String formattedDate = sdfFormat.format(date);
             String updateQuery = "UPDATE properties SET agentName = ?, askingPrice =?, region =?, propertiesType =?, closingDate=? WHERE propertyId=?";
             preparedStatement = con.prepareStatement(updateQuery);
             preparedStatement.setString(1, properties.getAgentName());
             preparedStatement.setString(2, properties.getAskingPrice());
             preparedStatement.setString(3, properties.getRegion());
             preparedStatement.setString(4, properties.getPropertiesType());
-            preparedStatement.setString(5, String.valueOf(convertedDate));
+            preparedStatement.setString(5, formattedDate);
             preparedStatement.setInt(6,propertyId);
             preparedStatement.executeUpdate();
             con.close();

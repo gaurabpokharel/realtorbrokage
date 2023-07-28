@@ -9,7 +9,7 @@ import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.*;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,56 +37,56 @@ public class ViewUI extends JFrame {
 
         // Initialize the selectedRows list
         selectedRows = new ArrayList<>();
-         // Create the table model
-            DefaultTableModel tableModel = new DefaultTableModel() {
-                @Override
-                public Class<?> getColumnClass(int columnIndex) {
-                    if (columnIndex == 0) {
-                        return Boolean.class; // Checkbox column
-                    }
-                    return super.getColumnClass(columnIndex);
+        // Create the table model
+        DefaultTableModel tableModel = new DefaultTableModel() {
+            @Override
+            public Class<?> getColumnClass(int columnIndex) {
+                if (columnIndex == 0) {
+                    return Boolean.class; // Checkbox column
                 }
-
-                @Override
-                public boolean isCellEditable(int row, int column) {
-                    return column == 0; // Allow editing only for the checkbox column
-                }
-            };
-
-            // Add column headers
-            tableModel.addColumn("Select");
-            tableModel.addColumn("Property Id");
-            tableModel.addColumn("Agent Name");
-            tableModel.addColumn("Asking Price");
-            tableModel.addColumn("Region");
-            tableModel.addColumn("Properties Type");
-            tableModel.addColumn("Closing Date");
-
-            PropertiesController propertiesController = new PropertiesController();
-            List<Properties> propertiesArrayList =  propertiesController.getAllPropertiesDetail();
-            int rowCount = 0;
-            // Add rows to the table model
-            for(Properties properties : propertiesArrayList){
-                int propertyId = properties.getPropertyId();
-                String agentName = properties.getAgentName();
-                String askingPrice = properties.getAskingPrice();
-                String region = properties.getRegion();
-                String propertiesType = properties.getPropertiesType();
-                String closingDate = properties.getClosingDate();
-
-                // Create an array to hold the user data for each row
-                Object[] rowData = {false, propertyId, agentName, askingPrice, region, propertiesType, closingDate};
-
-                // Add the row to the table model
-                tableModel.addRow(rowData);
-
-                // Add the row index to the selectedRows list
-                selectedRows.add(rowCount);
-                rowCount++;
+                return super.getColumnClass(columnIndex);
             }
 
-            // Create the JTable with the table model
-            userTable = new JTable(tableModel);
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return column == 0; // Allow editing only for the checkbox column
+            }
+        };
+
+        // Add column headers
+        tableModel.addColumn("Select");
+        tableModel.addColumn("Property Id");
+        tableModel.addColumn("Agent Name");
+        tableModel.addColumn("Asking Price");
+        tableModel.addColumn("Region");
+        tableModel.addColumn("Properties Type");
+        tableModel.addColumn("Closing Date");
+
+        PropertiesController propertiesController = new PropertiesController();
+        List<Properties> propertiesArrayList = propertiesController.getAllPropertiesDetail();
+        int rowCount = 0;
+        // Add rows to the table model
+        for (Properties properties : propertiesArrayList) {
+            int propertyId = properties.getPropertyId();
+            String agentName = properties.getAgentName();
+            String askingPrice = properties.getAskingPrice();
+            String region = properties.getRegion();
+            String propertiesType = properties.getPropertiesType();
+            String closingDate = properties.getClosingDate();
+
+            // Create an array to hold the user data for each row
+            Object[] rowData = {false, propertyId, agentName, askingPrice, region, propertiesType, closingDate};
+
+            // Add the row to the table model
+            tableModel.addRow(rowData);
+
+            // Add the row index to the selectedRows list
+            selectedRows.add(rowCount);
+            rowCount++;
+        }
+
+        // Create the JTable with the table model
+        userTable = new JTable(tableModel);
 
         // Add the table to a scroll pane
         JScrollPane scrollPane = new JScrollPane(userTable);
@@ -127,34 +127,31 @@ public class ViewUI extends JFrame {
         updateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                DefaultTableModel model = (DefaultTableModel) userTable.getModel();
                 int choice = JOptionPane.showConfirmDialog(null, "Are you sure you want to update the selected row(s)?", "Confirmation", JOptionPane.YES_NO_OPTION);
                 if (choice == JOptionPane.YES_OPTION) {
                     if (selectedRows.isEmpty()) {
                         JOptionPane.showMessageDialog(null, "No rows selected.", "Error", JOptionPane.ERROR_MESSAGE);
                         return;
-                    }
-                    else {
+                    } else {
                         Properties properties = new Properties();
-                        DefaultTableModel model = (DefaultTableModel) userTable.getModel();
                         for (int i = selectedRows.size() - 1; i >= 0; i--) {
                             int rowIndex = selectedRows.get(i);
                             String flag = model.getValueAt(rowIndex, 0).toString();
                             if (flag.equalsIgnoreCase("true")) {
-                                int propertyId =Integer.parseInt(model.getValueAt(rowIndex,1).toString());
+                                int propertyId = Integer.parseInt(model.getValueAt(rowIndex, 1).toString());
                                 properties = propertiesController.getPropertiesDetailByPropertyId(propertyId);
-                                UpdateUI updateUI= null;
+                                UpdateUI updateUI = null;
                                 try {
-                                    updateUI = new UpdateUI(properties,propertyId);
-
+                                    updateUI = new UpdateUI(properties, propertyId,username);
+                                    updateUI.setVisible(true);
+                                    dispose();
                                 } catch (ParseException ex) {
                                     throw new RuntimeException(ex);
                                 }
-                                updateUI.setVisible(true);
                             }
                         }
-                        selectedRows.clear();
                     }
-
                 }
             }
         });
@@ -200,24 +197,19 @@ public class ViewUI extends JFrame {
         }
 
         DefaultTableModel model = (DefaultTableModel) userTable.getModel();
-        Connection connection = null;
-        PreparedStatement statement = null;
-            PropertiesController propertiesController = new PropertiesController();
-            // Delete the selected rows from the database
-            for (int i = selectedRows.size() - 1; i >= 0; i--) {
-                int rowIndex = selectedRows.get(i);
-                String flag = model.getValueAt(rowIndex, 0).toString();
-                if (flag.equalsIgnoreCase("true")) {
-                    int propertyId =Integer.parseInt(model.getValueAt(rowIndex,1).toString());
-                    propertiesController.deleteDataFromProperties(propertyId);
-                    model.removeRow(rowIndex);
-                }
+        PropertiesController propertiesController = new PropertiesController();
+        // Delete the selected rows from the database
+        for (int i = selectedRows.size() - 1; i >= 0; i--) {
+            int rowIndex = selectedRows.get(i);
+            String flag = model.getValueAt(rowIndex, 0).toString();
+            if (flag.equalsIgnoreCase("true")) {
+                int propertyId = Integer.parseInt(model.getValueAt(rowIndex, 1).toString());
+                propertiesController.deleteDataFromProperties(propertyId);
+                model.removeRow(rowIndex);
             }
-            selectedRows.clear();
-
-            // Refresh the table to reflect the remaining data
-            model.fireTableDataChanged();
+        }
     }
+
     private void searchByAgentName(String agentName) {
         DefaultTableModel model = (DefaultTableModel) userTable.getModel();
         TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);

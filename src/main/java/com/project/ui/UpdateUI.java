@@ -9,8 +9,10 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * @author
@@ -29,7 +31,7 @@ public class UpdateUI extends JFrame {
         private JLabel closingDateLabel;
         private JDateChooser closingDateField;
 
-        public UpdateUI(Properties properties, int propertyId) throws ParseException {
+        public UpdateUI(Properties properties, int propertyId,String userName) throws ParseException {
             setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             setTitle("Add New Details");
 
@@ -49,12 +51,9 @@ public class UpdateUI extends JFrame {
             askingPriceField.setText(properties.getAskingPrice());
             regionField.setText(properties.getRegion());
             propertiesTypeField.setText(properties.getPropertiesType());
-            String date = properties.getClosingDate();
-            System.out.println("Date  is");
-            java.util.Date date2 = new SimpleDateFormat("yyyy/MM/dd").parse(date);
-            closingDateField.setDate(date2);
-            ;
-
+            SimpleDateFormat sdfFormat = new SimpleDateFormat("yyyy/MM/dd");
+            Date date = sdfFormat.parse(properties.getClosingDate());
+            closingDateField.setDate(date);
 
             // Create a panel for the form
             int vgap = 10;
@@ -90,6 +89,12 @@ public class UpdateUI extends JFrame {
                     Properties properties = new Properties(agentName, askingPrice, region, propertiesType, closingDate);
                     propertiesController.updateDataFromPropertyId(properties,propertyId);
                     JOptionPane.showMessageDialog(null,"Update is done successfully.");
+                    try {
+                        ViewUI viewUI = new ViewUI(userName);
+                        viewUI.setVisible(true);
+                    } catch (SQLException ex) {
+                        throw new RuntimeException(ex);
+                    }
                     dispose();
                 }
             });
