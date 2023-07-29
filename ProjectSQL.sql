@@ -10,3 +10,15 @@ CREATE TABLE IF NOT EXISTS properties (
     propertiesType VARCHAR(255),
     closingDate VARCHAR(255)
 );
+
+INSERT INTO properties(propertyId,agentName,askingPrice,region,propertiesType,closingDate)
+VALUES(1,'Ajay Shrestha','40,000','Ontario','Condo','2022/01/01');
+
+INSERT INTO properties(propertyId,agentName,askingPrice,region,propertiesType,closingDate)
+VALUES(2,'Gaurab Pokharel','40,000','Ontario','Condo','2022/01/01');
+
+INSERT INTO properties(propertyId,agentName,askingPrice,region,propertiesType,closingDate)
+VALUES(3,'Nirajan karki','40,000','Ontario','Condo','2022/01/01');
+
+INSERT INTO properties(propertyId,agentName,askingPrice,region,propertiesType,closingDate)
+VALUES(4,'Sakar Thapa','40,000','Ontario','Condo','2022/01/01');
