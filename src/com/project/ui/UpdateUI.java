@@ -1,7 +1,7 @@
 package com.project.ui;
 
 import com.project.controller.PropertiesController;
-import com.project.model.Properties;
+import com.project.model.Property;
 import com.toedter.calendar.JDateChooser;
 
 import javax.swing.*;
@@ -15,10 +15,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * @author
- * @project RealtorBrokage
+ * <p>Updates details to the database.</p>
+ * @author Ajay Shrestha, Gaurab Pokharel, Nirajan Karki, Sakar Thapa
  * @since 7/28/2023
  **/
+
 public class UpdateUI extends JFrame {
         private JLabel agentNameLabel;
         private JTextField agentNameField;
@@ -31,7 +32,7 @@ public class UpdateUI extends JFrame {
         private JLabel closingDateLabel;
         private JDateChooser closingDateField;
 
-        public UpdateUI(Properties properties, int propertyId,String userName) throws ParseException {
+        public UpdateUI(Property property, int propertyId,String userName) throws ParseException {
             setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             setTitle("Add New Details");
 
@@ -47,12 +48,12 @@ public class UpdateUI extends JFrame {
             closingDateLabel = new JLabel("Closing Date:");
             closingDateField = new JDateChooser();
 
-            agentNameField.setText(properties.getAgentName());
-            askingPriceField.setText(properties.getAskingPrice());
-            regionField.setText(properties.getRegion());
-            propertiesTypeField.setText(properties.getPropertiesType());
+            agentNameField.setText(property.getAgentName());
+            askingPriceField.setText(property.getAskingPrice());
+            regionField.setText(property.getRegion());
+            propertiesTypeField.setText(property.getPropertiesType());
             SimpleDateFormat sdfFormat = new SimpleDateFormat("yyyy/MM/dd");
-            Date date = sdfFormat.parse(properties.getClosingDate());
+            Date date = sdfFormat.parse(property.getClosingDate());
             closingDateField.setDate(date);
 
             // Create a panel for the form
@@ -86,8 +87,8 @@ public class UpdateUI extends JFrame {
                         return;
                     }
                     PropertiesController propertiesController = new PropertiesController();
-                    Properties properties = new Properties(agentName, askingPrice, region, propertiesType, closingDate);
-                    propertiesController.updateDataFromPropertyId(properties,propertyId);
+                    Property property = new Property(agentName, askingPrice, region, propertiesType, closingDate);
+                    propertiesController.updateDataFromPropertyId(property,propertyId);
                     JOptionPane.showMessageDialog(null,"Update is done successfully.");
                     try {
                         ViewUI viewUI = new ViewUI(userName);

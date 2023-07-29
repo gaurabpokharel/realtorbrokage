@@ -1,8 +1,8 @@
 package com.project;
 
 /**
- * @author
- * @project RealtorBrokage
+ * <p>Default class to display when program runs</p>
+ * @author Ajay Shrestha, Gaurab Pokharel, Nirajan Karki, Sakar Thapa
  * @since 7/28/2023
  **/
 import javax.swing.*;
@@ -21,12 +21,13 @@ import java.io.IOException;
 
 class LoginPageForm extends JFrame implements ActionListener {
 
+	//defining label and button for ui
     private JTextField textField1;
     private JPasswordField passwordField;
     private JButton submitButton;
 
 
-
+    //LoginForm ui
     LoginPageForm() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Realtor Brokerage");
@@ -75,17 +76,20 @@ class LoginPageForm extends JFrame implements ActionListener {
         setLocationRelativeTo(null);
     }
 
+    //actionPerformed to validate whether user input match with username and password
     @Override
     public void actionPerformed(ActionEvent e) {
         String userValue = textField1.getText();
         String passValue = new String(passwordField.getPassword());
 
         if (userValue.equals("test@gmail.com") && passValue.equals("test")) {
+        	//If success redirect to the IndexUIPage
             IndexUIPage page = new IndexUIPage(userValue);
             page.setVisible(true);
 
             dispose();
         } else {
+        	//If fail show the message as invalid username or password as login error
             JOptionPane.showMessageDialog(this, "Invalid username or password", "Login Error", JOptionPane.ERROR_MESSAGE);
         }
     }
@@ -100,15 +104,16 @@ class LoginPage {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
+            //Open LoginForm
             LoginPageForm form = new LoginPageForm();
             form.setVisible(true);
         });
         try {
+        	//Connect with the database
             DatabaseConnectivityDao jdbConnection = new DatabaseConnectivityDao();
             Connection con = jdbConnection.setUpConnection();
 
-            // Initialize the script runner
+            // Initialize the script runner to create the database,table and insert the data 
             ScriptRunner sr = new ScriptRunner(con);
 
             // Creating a reader object
@@ -122,6 +127,7 @@ class LoginPage {
             bufferedReader.close();
             con.close();
         } catch (SQLException | IOException e) {
+        	//Catching the exception if occured
             e.printStackTrace();
         }
     }

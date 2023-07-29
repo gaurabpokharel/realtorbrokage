@@ -1,11 +1,11 @@
 package com.project.model;
 
 /**
- * @author
- * @project RealtorBrokage
+ * <p>Model class</p>
+ * @author Ajay Shrestha, Gaurab Pokharel, Nirajan Karki, Sakar Thapa
  * @since 7/28/2023
  **/
-public class Properties {
+public class Property {
     private int propertyId;
     private String agentName;
     private String askingPrice;
@@ -13,6 +13,7 @@ public class Properties {
     private String propertiesType;
     private String closingDate;
 
+    //getter setter
     public int getPropertyId() {
         return propertyId;
     }
@@ -61,7 +62,8 @@ public class Properties {
         this.closingDate = closingDate;
     }
 
-    public Properties( String agentName, String askingPrice, String region, String propertiesType, String closingDate) {
+    //Creating the constructor using the feilds
+    public Property(String agentName, String askingPrice, String region, String propertiesType, String closingDate) {
         this.agentName = agentName;
         this.askingPrice = askingPrice;
         this.region = region;
@@ -69,10 +71,12 @@ public class Properties {
         this.closingDate = closingDate;
     }
 
-    public Properties() {
+    //Creating the constructor without the fields
+    public Property() {
         super();
     }
 
+    //toString method
     @Override
     public String toString() {
         return "Properties{" +

@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -14,14 +15,15 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import com.project.controller.PropertiesController;
-import com.project.model.Properties;
+import com.project.model.Property;
 import com.toedter.calendar.JDateChooser;
 
 /**
- * @author
- * @project RealtorBrokage
+ * <p>Add details to the database.</p>
+ * @author Ajay Shrestha, Gaurab Pokharel, Nirajan Karki, Sakar Thapa
  * @since 7/28/2023
  **/
+//UI to add data into the database
 public class AddForm extends JFrame {
 
         private JLabel agentNameLabel;
@@ -35,6 +37,7 @@ public class AddForm extends JFrame {
         private JLabel closingDateLabel;
         private JDateChooser closingDateField;
 
+        //Constructor
         public AddForm(String username) {
             setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             setTitle("Add New Details");
@@ -83,8 +86,13 @@ public class AddForm extends JFrame {
                         return;
                     }
                     PropertiesController propertiesController = new PropertiesController();
-                    Properties properties = new Properties(agentName,askingPrice,region,propertiesType,closingDate);
-                    propertiesController.insertData(properties);
+                    Property property = new Property(agentName,askingPrice,region,propertiesType,closingDate);
+                    try {
+						propertiesController.insertData(property);
+					} catch (ParseException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
                     dispose();
                 }
             });
