@@ -16,7 +16,7 @@ public class IndexUIPage extends JFrame {
 
 	public IndexUIPage(String username) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setTitle("Welcome! Index Page");
+		setTitle("Welcome");
 
 		// Create a label to display the welcome message
 //		JLabel welcomeLabel = new JLabel("Welcome: " + username);
