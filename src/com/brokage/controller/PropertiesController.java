@@ -31,7 +31,7 @@ public class PropertiesController {
         	//Connect with the database
             con = databaseConnectivityDao.setUpConnection();
             //query to insert into properties
-            String insertQuery = "Insert into properties (propertyId, agentName, askingPrice, region, propertiesType, closingDate) VALUES(?,?,?,?,?,?)";
+            String insertQuery = "Insert into Properties (propertyId, agentName, askingPrice, region, propertyType, closingDate) VALUES(?,?,?,?,?,?)";
             preparedStatement = con.prepareStatement(insertQuery);
             preparedStatement.setInt(1,property.getPropertyId());
             preparedStatement.setString(2, property.getAgentName());
@@ -43,7 +43,7 @@ public class PropertiesController {
             preparedStatement.executeUpdate();
             //Close the connection
             con.close();
-            System.out.println("Insert Query is execute successfully");
+            System.out.println("Insert Query is executed successfully");
             
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -59,14 +59,14 @@ public class PropertiesController {
         	//Connect with the database
             con = databaseConnectivityDao.setUpConnection();
             //query to delete from the table
-            String deleteQuery = "DELETE FROM  properties WHERE propertyId=?";
+            String deleteQuery = "DELETE FROM  Properties WHERE propertyId=?";
             preparedStatement = con.prepareStatement(deleteQuery);
             preparedStatement.setInt(1,propertyId);
             //execute the query
             preparedStatement.executeUpdate();
             //Close the connection
             con.close();
-            System.out.println("Delete Query is execute successfully");
+            System.out.println("Delete Query is executed successfully");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -86,7 +86,7 @@ public class PropertiesController {
             SimpleDateFormat sdfFormat = new SimpleDateFormat("yyyy/MM/dd");
             String formattedDate = sdfFormat.format(date);
             //Update data query 
-            String updateQuery = "UPDATE properties SET agentName = ?, askingPrice =?, region =?, propertiesType =?, closingDate=? WHERE propertyId=?";
+            String updateQuery = "UPDATE Properties SET agentName = ?, askingPrice =?, region =?, propertyType =?, closingDate=? WHERE propertyId=?";
             preparedStatement = con.prepareStatement(updateQuery);
             preparedStatement.setString(1, property.getAgentName());
             preparedStatement.setString(2, property.getAskingPrice());
@@ -97,7 +97,7 @@ public class PropertiesController {
             preparedStatement.executeUpdate();
             //Close the connection
             con.close();
-            System.out.println("Update Query is execute successfully");
+            System.out.println("Update Query is executed successfully");
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -116,7 +116,7 @@ public class PropertiesController {
         try {
             con = databaseConnectivityDao.setUpConnection();
             //select query to retrieve all data from properties table
-            String selectQuery = "SELECT * FROM properties";
+            String selectQuery = "SELECT * FROM Properties";
             preparedStatement = con.prepareStatement(selectQuery);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()){
@@ -130,7 +130,7 @@ public class PropertiesController {
                 propertiesArrayList.add(property);
             }
             con.close();
-            System.out.println("Select All Query is execute successfully");
+            System.out.println("Select All Query is executed successfully");
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -148,7 +148,7 @@ public class PropertiesController {
         try {
             con = databaseConnectivityDao.setUpConnection();
             //select query using agent name
-            String selectQuery = "SELECT * FROM properties WHERE agentName =?";
+            String selectQuery = "SELECT * FROM Properties WHERE agentName =?";
             preparedStatement = con.prepareStatement(selectQuery);
             preparedStatement.setString(1,agentName);
             ResultSet rs = preparedStatement.executeQuery();
@@ -164,7 +164,7 @@ public class PropertiesController {
                 propertiesArrayList.add(property);
             }
             con.close();
-            System.out.println("Select with agent name filter Query is execute successfully");
+            System.out.println("Select with agent name filter Query is executed successfully");
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -180,7 +180,7 @@ public class PropertiesController {
         	//Connect with the database
             con = databaseConnectivityDao.setUpConnection();
             //query to select detail from table using the propertyId
-            String selectQuery = "SELECT * FROM properties WHERE propertyId =?";
+            String selectQuery = "SELECT * FROM Properties WHERE propertyId =?";
             preparedStatement = con.prepareStatement(selectQuery);
             preparedStatement.setInt(1,propertyId);
             ResultSet rs = preparedStatement.executeQuery();
@@ -195,7 +195,7 @@ public class PropertiesController {
             }
             //Close the connection
             con.close();
-            System.out.println("Select with agent name filter Query is execute successfully");
+            System.out.println("Select with agent name filter Query is executed successfully");
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
