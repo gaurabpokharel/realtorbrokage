@@ -37,7 +37,7 @@ public class PropertiesController {
             preparedStatement.setString(2, property.getAgentName());
             preparedStatement.setString(3, property.getAskingPrice());
             preparedStatement.setString(4, property.getRegion());
-            preparedStatement.setString(5, property.getPropertiesType());
+            preparedStatement.setString(5, property.getPropertyType());
             preparedStatement.setString(6, formattedDate);
             //execute the prepared statement
             preparedStatement.executeUpdate();
@@ -91,7 +91,7 @@ public class PropertiesController {
             preparedStatement.setString(1, property.getAgentName());
             preparedStatement.setString(2, property.getAskingPrice());
             preparedStatement.setString(3, property.getRegion());
-            preparedStatement.setString(4, property.getPropertiesType());
+            preparedStatement.setString(4, property.getPropertyType());
             preparedStatement.setString(5, formattedDate);
             preparedStatement.setInt(6,propertyId);
             preparedStatement.executeUpdate();
@@ -125,7 +125,7 @@ public class PropertiesController {
                 property.setAgentName(rs.getString(2));
                 property.setAskingPrice(rs.getString(3));
                 property.setRegion(rs.getString(4));
-                property.setPropertiesType(rs.getString(5));
+                property.setPropertyType(rs.getString(5));
                 property.setClosingDate(rs.getString(6));
                 propertiesArrayList.add(property);
             }
@@ -158,7 +158,7 @@ public class PropertiesController {
                 property.setAgentName(rs.getString(2));
                 property.setAskingPrice(rs.getString(3));
                 property.setRegion(rs.getString(4));
-                property.setPropertiesType(rs.getString(5));
+                property.setPropertyType(rs.getString(5));
                 property.setClosingDate(rs.getString(6));
                 //setting the individual data into the list
                 propertiesArrayList.add(property);
@@ -190,7 +190,7 @@ public class PropertiesController {
                 property.setAgentName(rs.getString(2));
                 property.setAskingPrice(rs.getString(3));
                 property.setRegion(rs.getString(4));
-                property.setPropertiesType(rs.getString(5));
+                property.setPropertyType(rs.getString(5));
                 property.setClosingDate(rs.getString(6));
             }
             //Close the connection
